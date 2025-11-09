@@ -1,5 +1,11 @@
 # @hadl-labs/changelog-github
 
+## 0.4.4
+
+### Patch Changes
+
+- [`4155d3b`](https://github.com/hadl-labs/changelog-github/commit/4155d3b904de1e75858ead829f8c28b38b3f0f6f) Thanks [@tifandotme](https://github.com/tifandotme)! - adjust license
+
 ## 0.4.3
 
 ### Patch Changes
