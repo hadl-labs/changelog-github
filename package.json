@@ -6,6 +6,7 @@
   "files": [
     "dist"
   ],
+  "license": "MIT",
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --format cjs && tsc --emitDeclarationOnly --declaration --outDir dist",
     "test": "bun test",
