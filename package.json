@@ -24,6 +24,7 @@
     "@changesets/cli": "^2.29.7",
     "@changesets/parse": "^0.4.1",
     "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
     "prettier": "^3.6.2"
   },
   "peerDependencies": {
