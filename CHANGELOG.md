@@ -1,5 +1,11 @@
 # @hadl-labs/changelog-github
 
+## 0.4.5
+
+### Patch Changes
+
+- [`d694e7c`](https://github.com/hadl-labs/changelog-github/commit/d694e7c7caf2273e67c7e63ec9b6033c41058b2b) Thanks [@tifandotme](https://github.com/tifandotme)! - add metadata
+
 ## 0.4.4
 
 ### Patch Changes
