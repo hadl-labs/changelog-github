@@ -1,19 +1,24 @@
 {
   "name": "@hadl-labs/changelog-github",
   "version": "0.1.0",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
-  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "bun build src/index.ts --outdir dist --format cjs && tsc --emitDeclarationOnly --declaration --outDir dist",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "format": "prettier --check --log-level warn --cache --cache-strategy content '**/*.{js,ts,tsx,css,yml,yaml,json}'",
     "format:write": "prettier --write --log-level warn --cache --cache-strategy content '**/*.{js,ts,tsx,css,yml,yaml,json}'",
-    "check-updates": "npx npm-check-updates --format group --interactive"
+    "check-updates": "npx npm-check-updates --format group --interactive",
+    "release": "bun run build && changeset publish"
   },
   "dependencies": {
     "@changesets/get-github-info": "^0.6.0",
-    "@changesets/types": "^6.1.0"
+    "@changesets/types": "^6.1.0",
+    "@tsconfig/strictest": "^2.0.7"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
