@@ -119,7 +119,13 @@ it("with clickup link", async () => {
 
 it("with multiple clickup links", async () => {
   const result = await getReleaseLine(
-    ...getChangeset(["clickup: https://app.clickup.com/t/86evcnyrg", "clickup: https://app.clickup.com/t/another"].join("\n"), mockData.commit),
+    ...getChangeset(
+      [
+        "clickup: https://app.clickup.com/t/86evcnyrg",
+        "clickup: https://app.clickup.com/t/another",
+      ].join("\n"),
+      mockData.commit,
+    ),
   )
   expect(result).toBe(
     "\n\n- [#1613](https://github.com/emotion-js/emotion/pull/1613) [\`a085003\`](https://github.com/emotion-js/emotion/commit/a085003) Thanks [@Andarist](https://github.com/Andarist)! ClickUp: [86evcnyrg](https://app.clickup.com/t/86evcnyrg), [another](https://app.clickup.com/t/another) - something\n",
