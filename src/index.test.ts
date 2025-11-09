@@ -42,18 +42,19 @@ jest.mock("@changesets/get-github-info", () => ({
 }))
 
 const getChangeset = (content: string, commit: string | undefined) => {
-  return [
-    {
-      ...parse(
-        `---
+  const parsed = parse(
+    `---
 pkg: "minor"
 ---
 something
 ${content}
 `,
-      ),
+  )
+  return [
+    {
+      ...parsed,
       id: "some-id",
-      commit,
+      ...(commit !== undefined ? { commit } : {}),
     },
     "minor",
     { repo: mockData.repo },
