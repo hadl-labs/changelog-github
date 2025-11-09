@@ -15,11 +15,12 @@ const changelogFunctions: ChangelogFunctions = {
         changesets.map(async (cs) => {
           if (cs.commit) {
             let { links } = await getInfo({
-              repo: options.repo,
+              repo: options["repo"],
               commit: cs.commit,
             })
             return links.commit
           }
+          return null
         }),
       )
     )
@@ -32,8 +33,8 @@ const changelogFunctions: ChangelogFunctions = {
 
     return [changesetLink, ...updatedDepenenciesList].join("\n")
   },
-  getReleaseLine: async (changeset, type, options) => {
-    if (!options || !options.repo) {
+  getReleaseLine: async (changeset, _type, options) => {
+    if (!options || !options["repo"]) {
       throw new Error(
         'Please provide a repo to this changelog generator like this:\n"changelog": ["@changesets/changelog-github", { "repo": "org/repo" }]',
       )
@@ -42,6 +43,7 @@ const changelogFunctions: ChangelogFunctions = {
     let prFromSummary: number | undefined
     let commitFromSummary: string | undefined
     let usersFromSummary: string[] = []
+    let clickupLinks: string[] = []
 
     const replacedChangelog = changeset.summary
       .replace(/^\s*(?:pr|pull|pull\s+request):\s*#?(\d+)/im, (_, pr) => {
@@ -57,6 +59,10 @@ const changelogFunctions: ChangelogFunctions = {
         usersFromSummary.push(user)
         return ""
       })
+      .replace(/^\s*clickup:\s*(https:\/\/app\.clickup\.com\/t\/[^\s]+)/gim, (_, link) => {
+        clickupLinks.push(link)
+        return ""
+      })
       .trim()
 
     const [firstLine, ...futureLines] = replacedChangelog.split("\n").map((l) => l.trimRight())
@@ -64,14 +70,14 @@ const changelogFunctions: ChangelogFunctions = {
     const links = await (async () => {
       if (prFromSummary !== undefined) {
         let { links } = await getInfoFromPullRequest({
-          repo: options.repo,
+          repo: options["repo"],
           pull: prFromSummary,
         })
         if (commitFromSummary) {
           const shortCommitId = commitFromSummary.slice(0, 7)
           links = {
             ...links,
-            commit: `[\`${shortCommitId}\`](https://github.com/${options.repo}/commit/${commitFromSummary})`,
+            commit: `[\`${shortCommitId}\`](https://github.com/${options["repo"]}/commit/${commitFromSummary})`,
           }
         }
         return links
@@ -79,7 +85,7 @@ const changelogFunctions: ChangelogFunctions = {
       const commitToFetchFrom = commitFromSummary || changeset.commit
       if (commitToFetchFrom) {
         let { links } = await getInfo({
-          repo: options.repo,
+          repo: options["repo"],
           commit: commitToFetchFrom,
         })
         return links
@@ -98,10 +104,21 @@ const changelogFunctions: ChangelogFunctions = {
           .join(", ")
       : links.user
 
+    const clickupPart =
+      clickupLinks.length > 0 ?
+        ` ClickUp: ${clickupLinks
+          .map((link) => {
+            const taskId = link.split("/").pop()!
+            return `[${taskId}](${link})`
+          })
+          .join(", ")}`
+      : ""
+
     const prefix = [
       links.pull === null ? "" : ` ${links.pull}`,
       links.commit === null ? "" : ` ${links.commit}`,
       users === null ? "" : ` Thanks ${users}!`,
+      clickupPart,
     ].join("")
 
     return `\n\n-${prefix ? `${prefix} -` : ""} ${firstLine}\n${futureLines
