@@ -1,5 +1,11 @@
 # @hadl-labs/changelog-github
 
+## 0.4.6
+
+### Patch Changes
+
+- [`61c9451`](https://github.com/hadl-labs/changelog-github/commit/61c945105c7288026bca66e79ab68b6dbaeff64b) Thanks [@tifandotme](https://github.com/tifandotme)! - remove deps line
+
 ## 0.4.5
 
 ### Patch Changes
