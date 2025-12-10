@@ -2,36 +2,8 @@ import type { ChangelogFunctions } from "@changesets/types"
 import { getInfo, getInfoFromPullRequest } from "@changesets/get-github-info"
 
 const changelogFunctions: ChangelogFunctions = {
-  getDependencyReleaseLine: async (changesets, dependenciesUpdated, options) => {
-    if (!options.repo) {
-      throw new Error(
-        'Please provide a repo to this changelog generator like this:\n"changelog": ["@changesets/changelog-github", { "repo": "org/repo" }]',
-      )
-    }
-    if (dependenciesUpdated.length === 0) return ""
-
-    const changesetLink = `- Updated dependencies [${(
-      await Promise.all(
-        changesets.map(async (cs) => {
-          if (cs.commit) {
-            let { links } = await getInfo({
-              repo: options["repo"],
-              commit: cs.commit,
-            })
-            return links.commit
-          }
-          return null
-        }),
-      )
-    )
-      .filter((_) => _)
-      .join(", ")}]:`
-
-    const updatedDepenenciesList = dependenciesUpdated.map(
-      (dependency) => `  - ${dependency.name}@${dependency.newVersion}`,
-    )
-
-    return [changesetLink, ...updatedDepenenciesList].join("\n")
+  getDependencyReleaseLine: async () => {
+    return ""
   },
   getReleaseLine: async (changeset, _type, options) => {
     if (!options || !options["repo"]) {
