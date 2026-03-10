@@ -1,5 +1,11 @@
 # @hadl-labs/changelog-github
 
+## 0.5.0
+
+### Minor Changes
+
+- [`5f4d6b9`](https://github.com/hadl-labs/changelog-github/commit/5f4d6b90c213157925ef95ab41b42651cc3024e8) Thanks [@tifandotme](https://github.com/tifandotme)! - Replace `clickup:` field with generic `card:` field that accepts any URL. Supports Trello, Linear, and any other card management tool. CHANGELOG output label updated from `ClickUp:` to `Card:`.
+
 ## 0.4.6
 
 ### Patch Changes
