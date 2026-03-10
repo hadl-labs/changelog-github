@@ -15,7 +15,7 @@ const changelogFunctions: ChangelogFunctions = {
     let prFromSummary: number | undefined
     let commitFromSummary: string | undefined
     let usersFromSummary: string[] = []
-    let clickupLinks: string[] = []
+    let cardLinks: string[] = []
 
     const replacedChangelog = changeset.summary
       .replace(/^\s*(?:pr|pull|pull\s+request):\s*#?(\d+)/im, (_, pr) => {
@@ -31,8 +31,8 @@ const changelogFunctions: ChangelogFunctions = {
         usersFromSummary.push(user)
         return ""
       })
-      .replace(/^\s*clickup:\s*(https:\/\/app\.clickup\.com\/t\/[^\s]+)/gim, (_, link) => {
-        clickupLinks.push(link)
+      .replace(/^\s*card:\s*(https?:\/\/[^\s]+)/gim, (_, link) => {
+        cardLinks.push(link)
         return ""
       })
       .trim()
@@ -76,12 +76,12 @@ const changelogFunctions: ChangelogFunctions = {
           .join(", ")
       : links.user
 
-    const clickupPart =
-      clickupLinks.length > 0 ?
-        ` ClickUp: ${clickupLinks
+    const cardPart =
+      cardLinks.length > 0 ?
+        ` Card: ${cardLinks
           .map((link) => {
-            const taskId = link.split("/").pop()!
-            return `[${taskId}](${link})`
+            const slug = link.split("/").filter(Boolean).pop()!
+            return `[${slug}](${link})`
           })
           .join(", ")}`
       : ""
@@ -90,7 +90,7 @@ const changelogFunctions: ChangelogFunctions = {
       links.pull === null ? "" : ` ${links.pull}`,
       links.commit === null ? "" : ` ${links.commit}`,
       users === null ? "" : ` Thanks ${users}!`,
-      clickupPart,
+      cardPart,
     ].join("")
 
     return `\n\n-${prefix ? `${prefix} -` : ""} ${firstLine}\n${futureLines
